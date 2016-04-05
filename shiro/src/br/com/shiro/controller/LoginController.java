@@ -47,6 +47,11 @@ public class LoginController {
 			return retorno;
 		}
 	}
+	
+	public String logout(){
+		SecurityUtils.getSubject().logout();
+        return "/login.jsf?faces-redirect=true";
+	}
 
 	public String getUsername() {
 		return username;
