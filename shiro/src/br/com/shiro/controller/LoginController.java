@@ -24,17 +24,27 @@ public class LoginController {
 		password = new String();
 	}
 
-	public void login() {
+	public String login() {
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		token.setRememberMe(true);
 		 SecurityUtils.setSecurityManager(sm);
 		Subject currentUser = SecurityUtils.getSubject();
+		String retorno = null;
 		try {
 			currentUser.login(token);
-			System.out.println("Logado");
+			
+			if (currentUser.hasRole("ADMIN")) {
+				retorno = "/paginas/admin/index.jsf?faces-redirect=true";
+			}else {
+				retorno = "/paginas/convidado/index.jsf?faces-redirect=true";
+			}
+			
+			return retorno; 
+			
 		} catch (AuthenticationException e) {
 			System.out.println("Erro");
 			e.printStackTrace();
+			return retorno;
 		}
 	}
 
